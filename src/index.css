@@ -8,6 +8,8 @@
   default: true;
   --color-primary: #CAEB66;
   --color-secondary: #03373D;
+  --color-accent: #FAFDF0;
+  --color-info: #71717A;
 }
 body {
   font-family: "Urbanist", sans-serif;
