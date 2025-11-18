@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Logo from '../../components/Logo';
+import { Link } from 'react-router';
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
@@ -26,7 +27,7 @@ const Login = () => {
 
                     <div><a className="link link-hover text-lg text-info">Forgot password?</a></div>
                     <button className="btn btn-neutral mt-2 bg-primary border-0 shadow-none text-black">Login</button>
-                    <div><p className="text-lg text-info">Don't have any account? <a href="/signup" className="link link-hover text-primary text-lg font-semibold">Register</a></p></div>
+                    <div><p className="text-lg text-info">Don't have any account? <Link to="/user/signup" className="link link-hover text-primary text-lg font-semibold">Register</Link></p></div>
                 </fieldset>
             </form>
             <div className="divider">Or</div>
