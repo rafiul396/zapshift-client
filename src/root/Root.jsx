@@ -2,6 +2,7 @@ import React from 'react';
 import Home from '../pages/Home';
 import Navbar from '../components/header/Navbar';
 import { Outlet } from 'react-router';
+import Footer from '../components/footer/Footer';
 
 const Root = () => {
     return (
@@ -9,6 +10,7 @@ const Root = () => {
             <div className='max-w-7xl mx-auto'>
                 <Navbar />
                 <Outlet />
+                <Footer />
             </div>
         </div>
     );

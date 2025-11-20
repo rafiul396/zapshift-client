@@ -5,6 +5,8 @@ import Howitwork from '../components/home/Howitwork';
 import Services from '../components/home/Services';
 import Brands from '../components/home/Brands';
 import Reviews from '../components/home/reviews/Reviews';
+import Featuers from '../components/home/features/Featuers';
+import MerchantCustomer from '../components/home/MerchantCustomer';
 
 const reviewsPromise = fetch('/reviews.json').then(res => res.json())
 
@@ -48,6 +50,10 @@ const Home = () => {
                 </h3>
                 <Brands />
             </div>
+            {/* Features */}
+            <Featuers />
+            {/* Merchant and Customer */}
+            <MerchantCustomer />
             {/* Reviews */}
             <div className='my-20'>
                 <Reviews reviewsPromise={reviewsPromise} />

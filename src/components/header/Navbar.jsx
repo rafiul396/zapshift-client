@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../Logo';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 const Navbar = () => {
     const links = <>
@@ -33,8 +33,9 @@ const Navbar = () => {
                    {links}
                 </ul>
             </div>
-            <div className="navbar-end">
-                <a className="btn">Button</a>
+            <div className="navbar-end gap-4">
+                <Link className="btn bg-primary" to="/user/login">Login</Link>
+                <Link className="btn border-2 border-primary" to="/user/register">Register</Link>
             </div>
         </div>
     );

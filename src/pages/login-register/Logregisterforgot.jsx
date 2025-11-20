@@ -7,12 +7,13 @@ const Logregisterforgot = () => {
     return (
         <div className='max-w-7xl mx-auto flex gap-10'>
             <div className='flex-1 flex items-center'>
-                <div className='self-start mt-20'>
-                    <Logo />
+                <div className='self-start mt-5 xl:mt-20'>
+                    <a href='/'>
+                        <Logo />
+                    </a>
                 </div>
                 <div className='w-full '>
-                    <Outlet />
-                    
+                    <Outlet />   
                 </div>
             </div>
             <div className='flex-1 bg-accent h-screen flex justify-center items-center'>
