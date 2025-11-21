@@ -3,11 +3,11 @@ import agentPendingImg from '../../assets/agent-pending.png'
 
 const BeARider = () => {
     return (
-            <section className="bg-base-100 my-10 p-5 rounded-xl">
+            <section className="bg-base-100 my-10 p-10 rounded-xl">
 
                 {/* Title Section */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-green-900">Be a Rider</h1>
+                    <h1 className="text-3xl font-bold text-[#03373D]">Be a Rider</h1>
                     <p className="text-gray-600 mt-2 w-full md:w-3/4">
                         Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle.
                         From personal <br /> packages to business shipments — we deliver on time, every time.
@@ -62,7 +62,7 @@ const BeARider = () => {
                             <option>Select wire-house</option>
                         </select>
 
-                        <button className="w-full bg-lime-400 text-gray-900 font-semibold rounded-lg py-2">
+                        <button className="w-full bg-primary text-gray-900 font-semibold rounded-lg py-2">
                             Submit
                         </button>
                     </div>

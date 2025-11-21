@@ -21,8 +21,9 @@ export const router = createBrowserRouter([
         element: <BeARider />
       },
       {
-        path: "/percel",
-        element: <SendPercel />
+        path: "/parcel",
+        element: <SendPercel />,
+        loader: () => fetch('/public/warehouses.json')
       }
     ]
   },
