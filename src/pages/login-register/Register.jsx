@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import { Link } from 'react-router';
 import { FaUserPlus } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/authcontext/AuthContext';
 import userImg from '../../assets/image-upload-icon.png'
 
 const Register = () => {
+    const [fileName, setFileName] = useState('')
     const { registerUser } = use(AuthContext)
 
     const { handleSubmit,
@@ -33,16 +34,26 @@ const Register = () => {
                 <fieldset className="fieldset">
                     {/* <FaUserPlus className='text-4xl bg-gray-200 p-1 rounded-full cursor-pointer' /> */}
                     {/* <input type="file" className="file-input file-input-sm" /> */}
-                    <label className="w-10 h-10 border-gray-400 rounded-lg 
+                    <label className="w-full h-10 space-x-3 rounded-lg 
                   flex items-center justify-center cursor-pointer">
                         <img src={userImg} className="h-full object-contain" alt="" />
 
                         <input
                             type="file"
                             className="hidden"
-                            onChange={(e) => console.log(e.target.files[0])}
+                            onChange={(e) => {
+                                setFileName('')
+                                const file = e.target.files[0];
+                                setFileName(file)
+                            }}
                         />
+                        {
+                            fileName && <p className='w-full'>{fileName.name}</p>
+                        }
                     </label>
+                    {
+                        // fileName && <p>{fileName}</p>
+                    }
                     {/* <input type="file" {...register('photo', { required : true })} className="file-input file-input-sm" placeholder="Name" /> */}
                     <label className="label xl:text-base text-black font-semibold">Name</label>
                     <input type="name" {...register('name', { required: true })} className="p-2 border border-gray-200 rounded-md w-full text-xs xl:text-lg" placeholder="Name" />
