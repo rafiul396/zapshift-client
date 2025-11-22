@@ -6,6 +6,8 @@ import Home from "../pages/Home";
 import Logregisterforgot from "../pages/login-register/Logregisterforgot";
 import BeARider from "../pages/beARider/BeARider";
 import SendPercel from "../pages/send-percel/SendPercel";
+import Dashboard from "../root/dashborad/Dashboard";
+import MyParcel from "../root/dashborad/MyParcel";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +40,16 @@ export const router = createBrowserRouter([
       {
         path: "/user/register",
         element: <Register />
+      }
+    ]
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/dashboard/my-parcels",
+        element: <MyParcel />
       }
     ]
   }

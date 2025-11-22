@@ -10,7 +10,7 @@ const Navbar = () => {
         <li><NavLink>Pricing</NavLink></li>
         <li><NavLink to="/parcel">Send Parcel</NavLink></li>
         <li><NavLink to="/rider">Be a Rider</NavLink></li>
-        <li><NavLink>Contact</NavLink></li>
+        <li><NavLink to="/dashboard">My Parcel</NavLink></li>
     </>
     return (
         <div className="navbar bg-base-100 rounded-xl px-8 py-4">

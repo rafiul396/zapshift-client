@@ -1,6 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useLoaderData } from 'react-router';
+import Swal from 'sweetalert2';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const SendPercel = () => {
     const { register, handleSubmit, watch } = useForm();
@@ -10,7 +12,9 @@ const SendPercel = () => {
     const seviceDis = watch("serviceRegion")
     const receivingDis = watch("receivingRegion")
     // console.log(regions);
-    
+
+    const axiosSecure = useAxiosSecure();
+
     const serviceArea = (region) => {
         const filteredArea = wareHouseData.filter(center => center.region === region);
         const districts = filteredArea.map(dis => dis.district)
@@ -22,11 +26,45 @@ const SendPercel = () => {
         const districts = filteredArea.map(dis => dis.district)
         return districts;
     }
-    
-    
+
+
 
     const handleParcel = (data) => {
-        console.log(data);
+        const isSameAddress = data.serviceRegion === data.receivingRegion
+
+        let finalAmount = 0;
+        if (data.parcelType === 'Document') {
+            finalAmount = isSameAddress ? 60 : 80;
+        }
+        else {
+            const solidAmount = isSameAddress ? 110 : 150;
+            const parcelWeight = data.parcel_Weight
+            if (parcelWeight <= 3) {
+                finalAmount = solidAmount
+            }
+            else if (parcelWeight > 3) {
+                const extraWeight = parcelWeight - 3;
+                finalAmount = solidAmount + extraWeight * 40 + 40
+            }
+        }
+        console.log(finalAmount);
+        
+        Swal.fire({
+            title: "Are you sure?",
+            text: `You have to pay ${finalAmount} TK`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.post('/parcels', data)
+                .then(res => {
+                    console.log(res.data);
+                })
+            }
+        });
 
     }
     return (
