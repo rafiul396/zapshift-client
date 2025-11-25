@@ -52,23 +52,33 @@ const MyParcel = () => {
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
                     {/* head */}
-                    <thead>
+                    <thead className='text-center'>
                         <tr>
                             <th>Serial No</th>
+                            <th>Date</th>
                             <th>Name</th>
                             <th>Products</th>
                             <th>Description</th>
+                            <th>Amount</th>
+                            <th>Payment Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='text-center'>
                         {/* row 1 */}
                         {
                             parcels.map((parcel, index) => <tr key={parcel._id}>
                                 <th>{index + 1}</th>
+                                <th>{new Date(parcel.date).toLocaleDateString()}</th>
                                 <td>{parcel.receivers_Name}</td>
                                 <td>{parcel.parcel_Name}</td>
                                 <td>{parcel.delivery_Instruction}</td>
+                                <td>{parcel.cost}</td>
+                                <td>
+                                    {
+                                        parcel.parcel_Status === 'paid' ? <p>Paid</p> : <button className='btn btn-primary text-black'>Pay</button>
+                                    }
+                                </td>
                                 <td className='space-x-2'>
                                     <button className="btn btn-soft">
                                         <FaEdit />

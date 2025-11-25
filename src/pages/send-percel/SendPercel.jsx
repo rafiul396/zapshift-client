@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { use, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { AuthContext } from '../../context/authcontext/AuthContext';
 
 const SendPercel = () => {
+    const {users, loader} = use(AuthContext);
     const { register, handleSubmit, watch } = useForm();
     const wareHouseData = useLoaderData();
     const wareHouseRegions = wareHouseData.map(region => region.region)
     const regions = [...new Set(wareHouseRegions)]
     const seviceDis = watch("serviceRegion")
     const receivingDis = watch("receivingRegion")
+    const navigate = useNavigate();
     // console.log(regions);
 
     const axiosSecure = useAxiosSecure();
@@ -47,7 +50,9 @@ const SendPercel = () => {
                 finalAmount = solidAmount + extraWeight * 40 + 40
             }
         }
-        console.log(finalAmount);
+        data.cost = finalAmount;
+        data.date = new Date();
+        data.parcel_Status = 'Pay'
         
         Swal.fire({
             title: "Are you sure?",
@@ -56,17 +61,21 @@ const SendPercel = () => {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, cofirm it!"
         }).then((result) => {
             if (result.isConfirmed) {
                 axiosSecure.post('/parcels', data)
                 .then(res => {
-                    console.log(res.data);
+                    navigate('/dashboard/my-parcels')
                 })
             }
         });
 
     }
+    if(loader) {
+        return
+    }
+    
     return (
         <section className='text-secondary bg-base-100 my-10 p-10 rounded-xl'>
             <div>
@@ -108,11 +117,11 @@ const SendPercel = () => {
                         </p>
                         <fieldset>
                             <label className="label text-base font-semibold">Sender Name</label>
-                            <input type="text" {...register("sender_Name")} className="input w-full text-lg" placeholder="Sender Name" />
+                            <input type="text" {...register("sender_Name")} className="input w-full text-lg" placeholder="Sender Name" value={users?.displayName} />
                         </fieldset>
                         <fieldset>
-                            <label className="label text-base font-semibold">Address</label>
-                            <input type="text" {...register("sender_Address")} className="input w-full text-lg" placeholder="Address" />
+                            <label className="label text-base font-semibold">Sender Email</label>
+                            <input type="email" {...register("sender_Email")} className="input w-full text-lg" placeholder="Address" value={users?.email} />
                         </fieldset>
                         <fieldset>
                             <label className="label text-base font-semibold">Sender Phone No</label>
@@ -139,8 +148,8 @@ const SendPercel = () => {
                             </select>
                         </fieldset>
                         <fieldset>
-                            <label className="label text-base font-semibold">Your District</label>
-                            <input type="text" {...register("sender_District")} className="input w-full text-lg" placeholder="Your District" />
+                            <label className="label text-base font-semibold">Address</label>
+                            <input type="text" {...register("sender_Address")} className="input w-full text-lg" placeholder="Address" />
                         </fieldset>
                         <fieldset>
                             <label className="label text-base font-semibold">Pickup Instruction</label> <br />
@@ -183,10 +192,6 @@ const SendPercel = () => {
                                     receivingArea(receivingDis).map((region, index) => <option key={index} value={region} >{region}</option>)
                                 }
                             </select>
-                        </fieldset>
-                        <fieldset>
-                            <label className="label text-base font-semibold">Receivers District</label>
-                            <input type="text" {...register("reveivers_District")} className="input w-full text-lg" placeholder="Receivers District" />
                         </fieldset>
                         <fieldset>
                             <label className="label text-base font-semibold">Delivery Instruction</label> <br />
