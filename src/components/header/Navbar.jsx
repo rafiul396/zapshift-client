@@ -2,22 +2,28 @@ import React, { use } from 'react';
 import Logo from '../Logo';
 import { Link, NavLink } from 'react-router';
 import AuthProvider from '../../context/provider/AuthProvider';
-import { AuthContext } from '../../context/authcontext/AuthContext';
+import useAuth from '../../hooks/useAuth';
 
 const Navbar = () => {
-    const {users, logOut, loader} = use(AuthContext);
+    const { users, logOut, loader } = useAuth();
     // console.log(users.photoURL);
-    
+
     const links = <>
         <li><NavLink>Services</NavLink></li>
         <li><NavLink to="/coverage">Coverage</NavLink></li>
         <li><NavLink>About Us</NavLink></li>
         <li><NavLink>Pricing</NavLink></li>
-        <li><NavLink to="/parcel">Send Parcel</NavLink></li>
-        <li><NavLink to="/rider">Be a Rider</NavLink></li>
-        <li><NavLink to="/dashboard/my-parcels">My Parcel</NavLink></li>
+        {
+            users && (
+                <>
+                    <li><NavLink to="/parcel">Send Parcel</NavLink></li>
+                    <li><NavLink to="/rider">Be a Rider</NavLink></li>
+                    <li><NavLink to="/dashboard/my-parcels">My Parcel</NavLink></li>
+                </>
+            )
+        }
     </>
-    if(loader){
+    if (loader) {
         return
     }
     return (

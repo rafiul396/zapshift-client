@@ -1,19 +1,24 @@
 import React, { use, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { FaUserPlus } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../context/authcontext/AuthContext';
 import userImg from '../../assets/image-upload-icon.png';
 import { GoogleAuthProvider } from "firebase/auth";
 import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 
 const Register = () => {
     const googleProvider = new GoogleAuthProvider();
-    const [fileName, setFileName] = useState('')
+    const [fileName, setFileName] = useState('');
+    const axiosSecure = useAxiosSecure();
 
 
-    const { registerUser, setUsers, googleLogIn, updateUserProfile } = use(AuthContext)
+    const { registerUser, setUsers, googleLogIn, updateUserProfile } = useAuth();
+    const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
         googleLogIn(googleProvider)
@@ -29,11 +34,13 @@ const Register = () => {
 
     // register function to create user
     const handleRegister = (data) => {
-        const profileImg = fileName       
+        const profileImg = fileName
 
         registerUser(data.email, data.password)
-            .then(res => {
-                setUsers(res.user)
+            .then(result => {
+                setUsers(result.user)
+                console.log(result);
+
                 // storing img in imgbb for getting link
                 const formData = new FormData();
                 formData.append('image', profileImg)
@@ -49,15 +56,40 @@ const Register = () => {
                             photoURL: profilePhoto
                         }
 
+
+
+
                         updateUserProfile(userProfile)
-                        .then(() => {
-                            alert('done')
-                            
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            
-                        })
+                            .then(() => {
+                                // Posting user in server to store in database
+                                const userInfo = {
+                                    userName: data.name,
+                                    userEmail: result.user.email,
+                                    userRole: 'user',
+                                    createdAt: result.user.metadata.creationTime,
+                                    userPhoto: profilePhoto
+                                };
+
+                                axiosSecure.post('/users', userInfo)
+                                    .then(() => {
+                                        
+                                    })
+
+
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "You are successfully registered.",
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                });
+                                navigate('/')
+
+                            })
+                            .catch(err => {
+                                console.log(err);
+
+                            })
                     })
             })
 

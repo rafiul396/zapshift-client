@@ -11,6 +11,9 @@ import MyParcel from "../root/dashborad/MyParcel";
 import PaymentSuc from "../pages/payment/PaymentSuc";
 import PaymentCan from "../pages/payment/PaymentCan";
 import Coverage from "../pages/map/Coverage";
+import PrivateRoute from "../private/PrivateRoute";
+import MainDashboard from "../root/dashborad/MainDashboard";
+import Users from "../root/dashborad/Users";
 
 export const router = createBrowserRouter([
   {
@@ -23,11 +26,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/rider",
-        element: <BeARider />
+        element: <PrivateRoute>
+          <BeARider />
+        </PrivateRoute>
       },
       {
         path: "/parcel",
-        element: <SendPercel />,
+        element: <PrivateRoute>
+          <SendPercel />
+        </PrivateRoute>,
         loader: () => fetch('/public/warehouses.json')
       },
       {
@@ -55,6 +62,10 @@ export const router = createBrowserRouter([
     element: <Dashboard />,
     children: [
       {
+        index: true,
+        element: <MainDashboard />
+      },
+      {
         path: "/dashboard/my-parcels",
         element: <MyParcel />
       },
@@ -65,6 +76,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/payment-cancelled",
         element: <PaymentCan />
+      },
+      {
+        path: "/dashboard/users",
+        element: <Users />
       }
     ]
   }

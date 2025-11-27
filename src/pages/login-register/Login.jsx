@@ -1,13 +1,14 @@
 import React, { use } from 'react';
 import { useForm } from 'react-hook-form';
 import Logo from '../../components/Logo';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../../context/authcontext/AuthContext';
 import { GoogleAuthProvider } from "firebase/auth";
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
     const { loginUser, setUsers, googleLogIn } = use(AuthContext);
+    const navigate = useNavigate();
 
 
     const handleGoogleLogin = () => {
@@ -15,6 +16,7 @@ const Login = () => {
         googleLogIn(googleProvider)
             .then(res => {
                 setUsers(res.user)
+                navigate('/')
             })
     }
 
@@ -22,6 +24,7 @@ const Login = () => {
         loginUser(d.email, d.password)
             .then(res => {
                 setUsers(res.user)
+                navigate('/')
             })
     }
 

@@ -1,20 +1,33 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { FaEdit } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Swal from 'sweetalert2';
+import useAuth from '../../hooks/useAuth';
 
 const MyParcel = () => {
     const axiosSecure = useAxiosSecure();
+    // const [loader, setLoader] = useState(true);
+    const { users,loader } = useAuth(); 
 
     const { data: parcels = [], refetch } = useQuery({
-        queryKey: ['myParcels'],
+        queryKey: ['parcels', users?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get('/parcels')
+            const res = await axiosSecure.get(`/parcels?email=${users?.email}`)
+                // setLoader(false)
+                console.log(res.data);
+                
             return res.data;
         }
     })
+
+    if(loader){
+        return <h1>Loading...</h1>
+    }
+
+    // console.log(users?.email);
+    
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -56,12 +69,11 @@ const MyParcel = () => {
 
         const res = await axiosSecure.post('/parcel-checkout-session', paymentInfo)
         // console.log(res.data.url);
-        window.location.href = res.data.url;
-        
+        window.location.href = res.data.url; 
     }
 
     return (
-        <div>
+        <div className='m-4 p-4 rounded-xl bg-base-100'>
             My Parcels {parcels.length}
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
