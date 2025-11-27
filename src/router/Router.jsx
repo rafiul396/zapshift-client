@@ -8,6 +8,9 @@ import BeARider from "../pages/beARider/BeARider";
 import SendPercel from "../pages/send-percel/SendPercel";
 import Dashboard from "../root/dashborad/Dashboard";
 import MyParcel from "../root/dashborad/MyParcel";
+import PaymentSuc from "../pages/payment/PaymentSuc";
+import PaymentCan from "../pages/payment/PaymentCan";
+import Coverage from "../pages/map/Coverage";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +29,10 @@ export const router = createBrowserRouter([
         path: "/parcel",
         element: <SendPercel />,
         loader: () => fetch('/public/warehouses.json')
+      },
+      {
+        path: "/coverage",
+        element: <Coverage />
       }
     ]
   },
@@ -50,6 +57,14 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/my-parcels",
         element: <MyParcel />
+      },
+      {
+        path: "/dashboard/payment-success",
+        element: <PaymentSuc />
+      },
+      {
+        path: "/dashboard/payment-cancelled",
+        element: <PaymentCan />
       }
     ]
   }

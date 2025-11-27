@@ -10,7 +10,7 @@ const Navbar = () => {
     
     const links = <>
         <li><NavLink>Services</NavLink></li>
-        <li><NavLink>Coverage</NavLink></li>
+        <li><NavLink to="/coverage">Coverage</NavLink></li>
         <li><NavLink>About Us</NavLink></li>
         <li><NavLink>Pricing</NavLink></li>
         <li><NavLink to="/parcel">Send Parcel</NavLink></li>
@@ -46,7 +46,7 @@ const Navbar = () => {
                 {
                     users ? (<>
                         <Link className="btn bg-primary" onClick={logOut}>Logout</Link>
-                        <img className='w-10 h-10 rounded-full' src={users?.photoURL} alt="user's profile" />
+                        <img className='w-10 h-10 rounded-full border-2 border-primary' src={users?.photoURL} alt="user's profile" />
                     </>) : (
                         <>
                             <Link className="btn bg-primary" to="/user/login">Login</Link>

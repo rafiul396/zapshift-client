@@ -5,34 +5,65 @@ import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../context/authcontext/AuthContext';
 import userImg from '../../assets/image-upload-icon.png';
 import { GoogleAuthProvider } from "firebase/auth";
+import axios from 'axios';
 
 
 const Register = () => {
     const googleProvider = new GoogleAuthProvider();
     const [fileName, setFileName] = useState('')
-    const { registerUser, setUsers, googleLogIn } = use(AuthContext)
+
+
+    const { registerUser, setUsers, googleLogIn, updateUserProfile } = use(AuthContext)
 
     const handleGoogleLogin = () => {
         googleLogIn(googleProvider)
-        .then(res => {
-            setUsers(res.user)
-        })
+            .then(res => {
+                setUsers(res.user)
+            })
     }
 
+    // react hook form
     const { handleSubmit,
         register,
         formState: { errors } } = useForm();
 
+    // register function to create user
     const handleRegister = (data) => {
-        console.log(data);
+        const profileImg = fileName       
 
         registerUser(data.email, data.password)
             .then(res => {
-                console.log(res.user);
                 setUsers(res.user)
+                // storing img in imgbb for getting link
+                const formData = new FormData();
+                formData.append('image', profileImg)
+
+                const Img_Apis = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_Img_Host_Key}`
+
+                axios.post(Img_Apis, formData)
+                    .then(res => {
+                        const profilePhoto = res.data.data.url;
+
+                        const userProfile = {
+                            displayName: data.name,
+                            photoURL: profilePhoto
+                        }
+
+                        updateUserProfile(userProfile)
+                        .then(() => {
+                            alert('done')
+                            
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            
+                        })
+                    })
             })
 
+
     }
+
     return (
         <div className='w-2/3 xl:space-y-5'>
             <form onSubmit={handleSubmit(handleRegister)} className='xl:space-y-2'>
@@ -42,23 +73,26 @@ const Register = () => {
                 </div>
 
                 <fieldset className="fieldset">
-                    {/* <FaUserPlus className='text-4xl bg-gray-200 p-1 rounded-full cursor-pointer' /> */}
-                    {/* <input type="file" className="file-input file-input-sm" /> */}
-                    <label className="w-full h-10 space-x-3 rounded-lg 
+                    <label className="h-10 space-x-3 rounded-lg 
                   flex items-center justify-center cursor-pointer">
                         <img src={userImg} className="h-full object-contain" alt="" />
 
                         <input
+                            {...register("photo")}
                             type="file"
                             className="hidden"
                             onChange={(e) => {
                                 setFileName('')
                                 const file = e.target.files[0];
+                                if (file.size > 2097152) {
+                                    setFileName('File too large, max 2 MB allowed')
+                                    return
+                                }
                                 setFileName(file)
                             }}
                         />
                         {
-                            fileName && <p className='w-full'>{fileName.name}</p>
+                            fileName.name ? <p className='w-full'>{fileName.name}</p> : <p className='w-full text-red-500'>{fileName}</p>
                         }
                     </label>
                     {
