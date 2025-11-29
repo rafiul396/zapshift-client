@@ -14,6 +14,7 @@ import Coverage from "../pages/map/Coverage";
 import PrivateRoute from "../private/PrivateRoute";
 import MainDashboard from "../root/dashborad/MainDashboard";
 import Users from "../root/dashborad/Users";
+import AdminRoute from "../root/dashborad/admin-route/AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -59,7 +60,9 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: <PrivateRoute>
+      <Dashboard />
+    </PrivateRoute>,
     children: [
       {
         index: true,
@@ -79,7 +82,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/users",
-        element: <Users />
+        element: <AdminRoute>
+          <Users />
+        </AdminRoute>
       }
     ]
   }

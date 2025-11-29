@@ -24,7 +24,7 @@ const Navbar = () => {
         }
     </>
     if (loader) {
-        return
+        return <h1>Loading...</h1>
     }
     return (
         <div className="navbar bg-base-100 rounded-xl px-8 py-4">
@@ -51,8 +51,23 @@ const Navbar = () => {
             <div className="navbar-end gap-4">
                 {
                     users ? (<>
-                        <Link className="btn bg-primary" onClick={logOut}>Logout</Link>
-                        <img className='w-10 h-10 rounded-full border-2 border-primary' src={users?.photoURL} alt="user's profile" />
+
+                        <div className="dropdown dropdown-end">
+                            <div tabIndex={0} role="button"><img className='w-14 h-14 rounded-full border-2 border-primary' src={users?.photoURL} alt="user's profile" /></div>
+                            <ul tabIndex="-1" className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm  space-y-2">
+                                <div>
+                                    <p className='font-semibold text-lg'>{users?.displayName}</p>
+                                    <p className='text-base'>{users?.email}</p>
+                                </div>
+                                <li>
+                                    <Link className="" to="/dashboard">Dashboard</Link>
+                                </li>
+                                <li>
+                                    <Link className="btn bg-primary" onClick={logOut}>Logout</Link>
+                                </li>
+                            </ul>
+                        </div>
+
                     </>) : (
                         <>
                             <Link className="btn bg-primary" to="/user/login">Login</Link>

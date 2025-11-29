@@ -2,8 +2,15 @@ import React from 'react';
 import { FaFirstOrderAlt, FaUser } from 'react-icons/fa';
 import { Link, Outlet } from 'react-router';
 import Logo from '../../components/Logo';
+import useRole from '../../hooks/useRole';
 
 const Dashboard = () => {
+    const { role, isLoading } = useRole();
+    if (isLoading) {
+        return
+    }
+    const userRole = role.role;
+
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -37,17 +44,29 @@ const Dashboard = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
                                 <span className="is-drawer-close:hidden">Home</span>
                             </Link>
-                            <Link to="/dashboard/my-parcels" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
+                        </li>
+
+                        <li>
+                            <Link to="/dashboard/my-parcels" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Parcels">
                                 {/* Parcel icon */}
                                 <FaFirstOrderAlt className='my-1.5 inline-block size-4' />
                                 <span className="is-drawer-close:hidden">My Parcels</span>
                             </Link>
-                            <Link to="/dashboard/users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
-                                {/* Parcel icon */}
-                                <FaUser className='my-1.5 inline-block size-4' />
-                                <span className="is-drawer-close:hidden">Users</span>
-                            </Link>
                         </li>
+
+                        {
+                            userRole === 'admin' && (
+                                <>
+                                    <li>
+                                        <Link to="/dashboard/users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="All Users">
+                                            {/* Parcel icon */}
+                                            <FaUser className='my-1.5 inline-block size-4' />
+                                            <span className="is-drawer-close:hidden">All Users</span>
+                                        </Link>
+                                    </li>
+                                </>
+                            )
+                        }
 
                         {/* List item */}
                         <li>
