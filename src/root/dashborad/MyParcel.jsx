@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { FaEdit } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
@@ -9,7 +8,9 @@ import useAuth from '../../hooks/useAuth';
 const MyParcel = () => {
     const axiosSecure = useAxiosSecure();
     // const [loader, setLoader] = useState(true);
-    const { users,loader } = useAuth(); 
+    const { users,loader } = useAuth();
+
+
 
     const { data: parcels = [], refetch } = useQuery({
         queryKey: ['parcels', users?.email],
