@@ -15,6 +15,7 @@ import PrivateRoute from "../private/PrivateRoute";
 import MainDashboard from "../root/dashborad/MainDashboard";
 import Users from "../root/dashborad/Users";
 import AdminRoute from "../root/dashborad/admin-route/AdminRoute";
+import Applications from "../root/dashborad/riders/Applications";
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,12 @@ export const router = createBrowserRouter([
         path: "/dashboard/users",
         element: <AdminRoute>
           <Users />
+        </AdminRoute>
+      },
+      {
+        path: "/dashboard/riders",
+        element: <AdminRoute>
+          <Applications />
         </AdminRoute>
       }
     ]

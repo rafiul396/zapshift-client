@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useLoaderData } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const BeARider = () => {
     const { handleSubmit, register, watch } = useForm();
@@ -24,11 +25,22 @@ const BeARider = () => {
 
 
     const handleRiderData = (data, e) => {
-        console.log(data);
+        data.applicationAt = new Date();
+        data.rider_photo = users?.photoURL;
+        data.status = 'Pending';
 
         axiosSecure.post('/riders', data)
-        .then(() => {
-            e.target.reset()
+        .then((res) => {
+            console.log(res.data);
+            toast.error(res.data.message)
+            if(res.data.insertedId){
+                e.target.reset()
+            }
+            
+        })
+        .catch(err => {
+            console.log(err);
+            
         })
 
     }

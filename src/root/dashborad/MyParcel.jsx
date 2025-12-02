@@ -1,34 +1,37 @@
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaSearch } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import useAuth from '../../hooks/useAuth';
+import useRole from '../../hooks/useRole';
 
 const MyParcel = () => {
     const axiosSecure = useAxiosSecure();
+    const { role } = useRole();
+    const userRole = role.role;
+
+
     // const [loader, setLoader] = useState(true);
-    const { users,loader } = useAuth();
-
-
+    const { users, loader } = useAuth();
 
     const { data: parcels = [], refetch } = useQuery({
         queryKey: ['parcels', users?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${users?.email}`)
-                // setLoader(false)
-                console.log(res.data);
-                
+            // setLoader(false)
+            // console.log(res.data);
+
             return res.data;
         }
-    })
+    });
 
-    if(loader){
+    if (loader) {
         return <h1>Loading...</h1>
     }
 
     // console.log(users?.email);
-    
+
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -43,18 +46,18 @@ const MyParcel = () => {
             if (result.isConfirmed) {
 
                 axiosSecure.delete(`parcels/${id}`)
-                .then(res => {
-                    refetch();
-                    if(res.data.deletedCount){
+                    .then(res => {
+                        refetch();
+                        if (res.data.deletedCount) {
 
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Your file has been deleted.",
-                            icon: "success"
-                        });
-                    }
-                })
-                
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
+
 
             }
         });
@@ -70,7 +73,7 @@ const MyParcel = () => {
 
         const res = await axiosSecure.post('/parcel-checkout-session', paymentInfo)
         // console.log(res.data.url);
-        window.location.href = res.data.url; 
+        window.location.href = res.data.url;
     }
 
     return (
@@ -84,6 +87,9 @@ const MyParcel = () => {
                             <th>Serial No</th>
                             <th>Date</th>
                             <th>Name</th>
+                            {
+                                userRole === 'admin' && <th>Email</th>
+                            }
                             <th>Products</th>
                             <th>Description</th>
                             <th>Amount</th>
@@ -98,15 +104,22 @@ const MyParcel = () => {
                                 <th>{index + 1}</th>
                                 <th>{new Date(parcel.date).toLocaleDateString()}</th>
                                 <td>{parcel.receivers_Name}</td>
+                                {
+                                    userRole === 'admin' && <td>{parcel.sender_Email}</td>
+                                }
+
                                 <td>{parcel.parcel_Name}</td>
                                 <td>{parcel.delivery_Instruction}</td>
                                 <td>{parcel.cost}</td>
                                 <td>
                                     {
-                                        parcel.parcel_Status === 'paid' ? <p>Paid</p> : <button onClick={() => handlePayment(parcel)}  className='btn btn-primary text-black'>Pay</button>
+                                        parcel.parcel_Status === 'paid' ? <p>Paid</p> : <button onClick={() => handlePayment(parcel)} className='btn btn-primary text-black'>Pay</button>
                                     }
                                 </td>
                                 <td className='space-x-2'>
+                                    <button className="btn btn-soft">
+                                        <FaSearch />
+                                    </button>
                                     <button className="btn btn-soft">
                                         <FaEdit />
                                     </button>

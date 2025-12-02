@@ -10,9 +10,9 @@ const AdminRoute = ({ children }) => {
         return <h1>Loading...</h1>
     }
 
-    // if(role === 'admin'){
-    //     return <div><h2>This page is not for you!!!</h2></div>
-    // }
+    if(role === 'user'){
+        return <div><h2>This page is not for you!!!</h2></div>
+    }
 
     return children;
 };

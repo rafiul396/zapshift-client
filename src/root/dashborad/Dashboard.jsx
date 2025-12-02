@@ -3,6 +3,7 @@ import { FaFirstOrderAlt, FaUser } from 'react-icons/fa';
 import { Link, Outlet } from 'react-router';
 import Logo from '../../components/Logo';
 import useRole from '../../hooks/useRole';
+import { VscGitPullRequestNewChanges } from 'react-icons/vsc';
 
 const Dashboard = () => {
     const { role, isLoading } = useRole();
@@ -47,10 +48,14 @@ const Dashboard = () => {
                         </li>
 
                         <li>
-                            <Link to="/dashboard/my-parcels" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Parcels">
+                            <Link to="/dashboard/my-parcels" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip={`${userRole === 'admin' ? 'All Parcels' : 'My Parcels'}`}>
                                 {/* Parcel icon */}
                                 <FaFirstOrderAlt className='my-1.5 inline-block size-4' />
-                                <span className="is-drawer-close:hidden">My Parcels</span>
+                                <span className="is-drawer-close:hidden">
+                                    {
+                                        userRole === 'admin' ? 'All Parcels' : 'My Parcels'
+                                    }
+                                </span>
                             </Link>
                         </li>
 
@@ -62,6 +67,13 @@ const Dashboard = () => {
                                             {/* Parcel icon */}
                                             <FaUser className='my-1.5 inline-block size-4' />
                                             <span className="is-drawer-close:hidden">All Users</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/dashboard/riders" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Riders Applications">
+                                            {/* Parcel icon */}
+                                            <VscGitPullRequestNewChanges className='my-1.5 inline-block size-4' />
+                                            <span className="is-drawer-close:hidden">Riders Applications</span>
                                         </Link>
                                     </li>
                                 </>

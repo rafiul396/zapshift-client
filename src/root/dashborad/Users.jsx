@@ -1,7 +1,7 @@
 import React from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
-import { FaEdit, FaUserShield } from 'react-icons/fa';
+import { FaEdit, FaSearch, FaUserShield } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Swal from 'sweetalert2';
 
